@@ -1,15 +1,24 @@
 import React from 'react';
 
 const Navbar = (props) => {
-  const login = () => {
-    props.setUser(true);
+  // action listener for login button
+  const login = async () => {
+    // get link to login from api
+    const loginURL = 'http://localhost:8888';
+    const link = await fetch(`${loginURL}/session/new`);
+    const json = await link.json();
+
+    // redirect to login url
+    window.location.href = json.url;
   };
 
+  // action listener for logout button
   const logout = () => {
     props.setUser(false);
   };
 
   const Profile = () => {
+    // if user is logged in, display profile and logout button
     if (props.user) {
       return (
         <ul className="navbar-nav ml-auto">
@@ -26,16 +35,17 @@ const Navbar = (props) => {
         </ul>
       );
     } else {
+      // if user is not logged in, display login button
       return (
         <ul className="navbar-nav ml-auto">
           <li className="nav-item">
             <button
               type="button"
-              className="btn btn-success"
+              className="btn btn-primary"
               href=""
               onClick={login}
             >
-              Login
+              Login to MyAnimeList
             </button>
           </li>
         </ul>
@@ -70,10 +80,12 @@ const Navbar = (props) => {
           </li>
           <li className="nav-item dropdown">
             <a
+              //href="#"
+              href="/"
               className="nav-link dropdown-toggle"
               id="navdrop"
               data-toggle="dropdown"
-              aria-haspopup="true"
+              //aria-haspopup="true"
               aria-expanded="false"
             >
               Lists
