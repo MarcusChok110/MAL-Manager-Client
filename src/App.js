@@ -9,22 +9,23 @@ import {
   Search,
   Schedule,
 } from './components/index';
+import Login from './api/Login';
 
 function App() {
   // state for user info from MyAnimeList
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState('');
 
   // grab user data from localStorage on component mount
   useEffect(() => {
-    const userData = localStorage.getItem('user-data');
-    if (userData) {
-      setUser(JSON.parse(userData));
+    const authToken = localStorage.getItem('auth-token');
+    if (authToken) {
+      setUser(authToken);
     }
   }, []);
 
   // update user data in localStorage on component mount and update
   useEffect(() => {
-    localStorage.setItem('user-data', user);
+    localStorage.setItem('auth-token', user);
   });
 
   return (
@@ -34,11 +35,18 @@ function App() {
         <Router>
           <div className="App">
             <Switch>
-              <Route exact path="/" component={Home} />
+              <Route exact path="/" user={user} component={Home} />
               <Route exact path="/animelist" component={AnimeList} />
               <Route exact path="/mangalist" component={MangaList} />
               <Route exact path="/search" component={Search} />
               <Route exact path="/schedule" component={Schedule} />
+              <Route
+                exact
+                path="/login"
+                user={user}
+                setUser={setUser}
+                component={Login}
+              />
             </Switch>
           </div>
         </Router>
