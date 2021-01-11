@@ -31,7 +31,7 @@ function App() {
   return (
     <div>
       <Navbar user={user} setUser={setUser} />
-      <div className="container">
+      <div className="container mt-2">
         <Router>
           <div className="App">
             <Switch>
