@@ -8,6 +8,7 @@ import {
   MangaList,
   Search,
   Schedule,
+  SearchAnime,
 } from './components/index';
 import Login from './api/Login';
 
@@ -47,6 +48,7 @@ function App() {
                 setUser={setUser}
                 component={Login}
               />
+              <Route exact path="/search/anime" component={SearchAnime} />
             </Switch>
           </div>
         </Router>
