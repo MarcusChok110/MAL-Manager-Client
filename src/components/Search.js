@@ -141,7 +141,7 @@ const Search = (props) => {
   return (
     <div>
       <h1>Search</h1>
-      <form action="">
+      <form action="/search/anime">
         <div className="input-group">
           <input
             type="text"
