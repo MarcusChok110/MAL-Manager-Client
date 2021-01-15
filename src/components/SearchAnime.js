@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 const SearchAnime = (props) => {
-  const [data, setData] = useState([1]);
+  const [data, setData] = useState();
   const query = props.location.search;
 
   useEffect(() => {
@@ -9,7 +9,7 @@ const SearchAnime = (props) => {
   }, []);
 
   const renderData = () => {
-    if (data === [1]) {
+    if (data === undefined) {
       return <h3>Loading...</h3>;
     } else if (data.length === 0) {
       return <h3>No results found.</h3>;
