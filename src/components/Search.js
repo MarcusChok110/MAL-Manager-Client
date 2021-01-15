@@ -77,36 +77,51 @@ const Search = (props) => {
 
   const GenreSelect = () => {
     const genres = searchEnums.genre;
+
+    const renderGenres = () => {
+      return Object.keys(genres.data)
+        .reduce((acc, val, index) => {
+          const numCols = 6;
+          const rowIndex = Math.floor(index / numCols);
+
+          if (!acc[rowIndex]) {
+            acc.push([]);
+          }
+
+          acc[rowIndex].push(
+            <div key={index - 1} className="col-6 col-sm-4 col-lg-2">
+              <input
+                name={genres.name}
+                value={genres.data[val]}
+                className="form-check-input"
+                type="checkbox"
+                id={genres.data[val]}
+                key={index + 1}
+              />
+              <label
+                key={index}
+                className="form-check-label"
+                htmlFor={genres.data[val]}
+              >
+                {val}
+              </label>
+            </div>
+          );
+          return acc;
+        }, [])
+        .map((val) => {
+          return <div className="row">{val}</div>;
+        });
+    };
+
     return (
       <div className="form-group mt-3">
         <div className="row">
           <label className="col-sm-2" htmlFor={genres.name + '-input'}>
-            Select Genres
+            Select Genres:
           </label>
         </div>
-        <div className="form-check row">
-          {Object.keys(genres.data).map((key, index) => {
-            return (
-              <div key={index - 1} className="col-sm-2">
-                <input
-                  name={genres.name}
-                  value={genres.data[key]}
-                  className="form-check-input"
-                  type="checkbox"
-                  id={genres.data[key]}
-                  key={index + 1}
-                />
-                <label
-                  key={index}
-                  className="form-check-label"
-                  htmlFor={genres.data[key]}
-                >
-                  {key}
-                </label>
-              </div>
-            );
-          })}
-        </div>
+        <div className="form-check">{renderGenres()}</div>
       </div>
     );
   };
