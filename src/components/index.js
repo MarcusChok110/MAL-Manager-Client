@@ -5,5 +5,15 @@ import MangaList from './MangaList';
 import Search from './Search';
 import Schedule from './Schedule';
 import SearchAnime from './SearchAnime';
+import Anime from './Anime';
 
-export { Home, Navbar, AnimeList, MangaList, Search, Schedule, SearchAnime };
+export {
+  Home,
+  Navbar,
+  AnimeList,
+  MangaList,
+  Search,
+  Schedule,
+  SearchAnime,
+  Anime,
+};
