@@ -14,7 +14,6 @@ const SearchAnime = (props) => {
     } else if (data.length === 0) {
       return <h3>No results found.</h3>;
     } else {
-      // return JSON.stringify(data);
       return data
         .reduce((acc, val, index) => {
           // 4 columns per row
@@ -27,17 +26,21 @@ const SearchAnime = (props) => {
 
           acc[rowIndex].push(
             <div className="col-6 col-lg-3 mb-3" key={index}>
-              <div className="card">
+              <div className="card" style={{ height: '680px' }}>
                 <img
                   src={val.image_url}
                   alt={`${val.title} Poster`}
                   className="card-img-top img-fluid"
                 />
-                <div className="card-body">
-                  <h5 className="card-title">
-                    <a href={val.url}>{val.title}</a>
-                  </h5>
-                  <p className="card-text">{val.synopsis}</p>
+
+                <h6 className="card-title text-center card-header">
+                  <a href={val.url}>{val.title}</a>
+                </h6>
+
+                <div className="card-body overflow-auto">
+                  <div>
+                    <p className="card-text">{val.synopsis}</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -45,8 +48,12 @@ const SearchAnime = (props) => {
 
           return acc;
         }, [])
-        .map((val) => {
-          return <div className="row">{val}</div>;
+        .map((val, index) => {
+          return (
+            <div className="row" key={index}>
+              {val}
+            </div>
+          );
         });
     }
   };
@@ -64,6 +71,7 @@ const SearchAnime = (props) => {
       `https://api.jikan.moe/v3/search/anime${query}`
     );
     const result = await response.json();
+    console.log(result);
     const data = result.results;
     setData(data);
   };
