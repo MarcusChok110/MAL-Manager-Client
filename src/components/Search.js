@@ -117,7 +117,7 @@ const Search = (props) => {
     return (
       <div className="form-group mt-3">
         <div className="row">
-          <label className="col-sm-2" htmlFor={genres.name + '-input'}>
+          <label className="col-6 mb-4" htmlFor={genres.name + '-input'}>
             Select Genres:
           </label>
         </div>

@@ -3,13 +3,16 @@ import React from 'react';
 const OptionSelect = ({ options, defaultValue, defaultMsg, label }) => {
   return (
     <div className="form-group row mt-3">
-      <label className="col-sm-2" htmlFor={options.name + '-input'}>
+      <label
+        className="col-4 col-sm-4 col-lg-2"
+        htmlFor={options.name + '-input'}
+      >
         {label}
       </label>
       <select
         name={options.name}
         id={options.name + '-input'}
-        className="form-control col-sm-3"
+        className="form-control col-7 col-sm-6 col-lg-4"
         defaultValue={defaultValue}
       >
         <option value={defaultValue}>{defaultMsg}</option>
