@@ -89,7 +89,7 @@ const Search = (props) => {
           }
 
           acc[rowIndex].push(
-            <div key={index - 1} className="col-6 col-sm-4 col-lg-2">
+            <div key={index - 1} className="col-6 col-sm-4 col-lg-2 mb-2">
               <input
                 name={genres.name}
                 value={genres.data[val]}
