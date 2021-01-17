@@ -9,6 +9,7 @@ import {
   Search,
   Schedule,
   SearchAnime,
+  Anime,
 } from './components/index';
 import Login from './api/Login';
 
@@ -49,6 +50,7 @@ function App() {
                 component={Login}
               />
               <Route exact path="/search/anime" component={SearchAnime} />
+              <Route exact path="/anime/:id" component={Anime} />
             </Switch>
           </div>
         </Router>

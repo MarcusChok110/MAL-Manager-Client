@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const SearchAnime = (props) => {
   const [data, setData] = useState();
@@ -34,7 +35,7 @@ const SearchAnime = (props) => {
                 />
 
                 <h6 className="card-title text-center card-header">
-                  <a href={val.url}>{val.title}</a>
+                  <Link to={`/anime/${val.mal_id}`}>{val.title}</Link>
                 </h6>
 
                 <div className="card-body overflow-auto">
