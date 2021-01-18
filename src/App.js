@@ -15,29 +15,65 @@ import Login from './api/Login';
 
 function App() {
   // state for user info from MyAnimeList
-  const [user, setUser] = useState('');
+  const [userToken, setUserToken] = useState('');
+  const [userData, setUserData] = useState();
+  const [animeList, setAnimeList] = useState('');
 
-  // grab user data from localStorage on component mount
+  // grab auth token from localStorage on component mount
   useEffect(() => {
     const authToken = localStorage.getItem('auth-token');
-    if (authToken) {
-      setUser(authToken);
+    if (authToken && !userToken) {
+      setUserToken(authToken);
+    } else {
+      setUserToken('');
     }
   }, []);
 
-  // update user data in localStorage on component mount and update
+  // every time auth token updates, grab user info from MAL
   useEffect(() => {
-    localStorage.setItem('auth-token', user);
-  });
+    if (userToken === '') {
+      setUserData('');
+      setAnimeList('');
+    } else {
+      fetchUserData();
+      fetchAnimeList();
+    }
+  }, [userToken]);
+
+  const fetchUserData = async () => {
+    // check if local storage has user data
+    const data = localStorage.getItem('userData');
+    if (data) {
+      return setUserData(JSON.parse(data));
+    }
+
+    // if not, fetch it from API
+    const url = 'http://localhost:8888/user';
+    const options = {
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    };
+    const response = await fetch(url, options);
+    const json = await response.json();
+    setUserData(json);
+    localStorage.setItem('userData', JSON.stringify(json));
+  };
+
+  const fetchAnimeList = async () => {};
 
   return (
     <div>
-      <Navbar user={user} setUser={setUser} />
-      <div className="container mt-2">
-        <Router>
+      <Router>
+        <Navbar user={userToken} setUser={setUserToken} />
+        <div className="container mt-2">
           <div className="App">
             <Switch>
-              <Route exact path="/" user={user} component={Home} />
+              <Route
+                exact
+                path="/"
+                render={(props) => <Home {...props} userData={userData} />}
+              />
               <Route exact path="/animelist" component={AnimeList} />
               <Route exact path="/mangalist" component={MangaList} />
               <Route exact path="/search" component={Search} />
@@ -45,16 +81,18 @@ function App() {
               <Route
                 exact
                 path="/login"
-                user={user}
-                setUser={setUser}
-                component={Login}
+                user={userToken}
+                setUser={setUserToken}
+                render={(props) => (
+                  <Login {...props} setUserData={setUserData} />
+                )}
               />
               <Route exact path="/search/anime" component={SearchAnime} />
               <Route exact path="/anime/:id" component={Anime} />
             </Switch>
           </div>
-        </Router>
-      </div>
+        </div>
+      </Router>
     </div>
   );
 }
