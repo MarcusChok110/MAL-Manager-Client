@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 const Login = (props) => {
   const [success, setSuccess] = useState(0);
-  const sessionURL = 'http://localhost:8888/session';
 
   const Message = () => {
     if (success === 1) {
@@ -15,7 +14,9 @@ const Login = (props) => {
   };
 
   useEffect(() => {
+    const sessionURL = 'http://localhost:8888/session';
     const params = new URLSearchParams(props.location.search);
+
     const options = {
       method: 'POST',
       mode: 'cors',
@@ -46,7 +47,7 @@ const Login = (props) => {
           window.location = '/';
         }, 2000);
       });
-  }, [props, success]);
+  }, []);
 
   return (
     <div>
