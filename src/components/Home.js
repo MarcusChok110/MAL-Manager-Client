@@ -4,7 +4,7 @@ const Home = ({ userData }) => {
   const Greeting = () => {
     if (userData) {
       return <p>{JSON.stringify(userData)}</p>;
-    } else if (userData === undefined) {
+    } else if (userData === '') {
       return (
         <>
           <hr />

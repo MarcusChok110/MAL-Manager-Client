@@ -4,7 +4,7 @@ const AnimeList = ({ animeList }) => {
   const ListFormatted = () => {
     if (animeList) {
       return <p>{JSON.stringify(animeList)}</p>;
-    } else if (animeList === undefined) {
+    } else if (animeList === '') {
       return (
         <p>
           Please log with your MyAnimeList account if you want to see your Anime
