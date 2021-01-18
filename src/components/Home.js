@@ -1,27 +1,25 @@
 import React, { useEffect, useState } from 'react';
 
-const Home = (props) => {
-  const [userData, setUserData] = useState('');
-  const Greeting = () => {};
-  const token = localStorage.getItem('auth-token');
-  useEffect(() => {
-    if (token) {
-      fetch('https://api.myanimelist.net/v2/users/@me', {
-        method: 'GET',
-        credentials: 'same-origin',
-        mode: 'cors',
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          Authorization: `Bearer ${token}`,
-        },
-      }).then((response) => {
-        console.log(response);
-      });
+const Home = ({ userData }) => {
+  const Greeting = () => {
+    if (userData) {
+      return <p>{JSON.stringify(userData)}</p>;
+    } else if (userData === undefined) {
+      return (
+        <>
+          <hr />
+          <h2>Hi, stranger!</h2>
+        </>
+      );
+    } else {
+      return null;
     }
-  });
+  };
+
   return (
     <div>
       <h1>Home</h1>
+      <Greeting />
     </div>
   );
 };
