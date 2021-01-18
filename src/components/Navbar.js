@@ -14,7 +14,16 @@ const Navbar = (props) => {
 
   // action listener for logout button
   const logout = () => {
-    props.setUser('');
+    // send a post request to delete the cookie
+    const loginURL = 'http://localhost:8888';
+    const options = {
+      method: 'POST',
+      credentials: 'include',
+    };
+    fetch(`${loginURL}/session/logout`, options);
+
+    // clear data on front end and redirect user
+    props.setUser(false);
     localStorage.setItem('logged_in', false);
     window.location = '/';
   };
