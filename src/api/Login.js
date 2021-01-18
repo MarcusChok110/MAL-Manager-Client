@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 
 const Login = (props) => {
   const [success, setSuccess] = useState(0);
-  const history = useHistory();
+  const sessionURL = 'http://localhost:8888/session';
 
   const Message = () => {
     if (success === 1) {
@@ -28,19 +27,27 @@ const Login = (props) => {
         'Content-Type': 'application/json',
       },
     };
-    fetch('http://localhost:8888/session', options)
+    fetch(sessionURL, options)
       .then((response) => {
         return response.json();
       })
       .then((response) => {
         localStorage.setItem('auth-token', response.access_token);
+        props.setUserData(response.access_token);
         setSuccess(1);
-        setTimeout(() => history.push('/'), 1000);
+        setTimeout(() => {
+          window.location = '/';
+        }, 2000);
       })
       .catch((response) => {
         setSuccess(-1);
+        console.log(response);
+        setTimeout(() => {
+          window.location = '/';
+        }, 2000);
       });
-  }, []);
+  }, [props, success]);
+
   return (
     <div>
       <h1>Logging in...</h1>
