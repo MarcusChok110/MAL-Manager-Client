@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 const Home = ({ userData }) => {
   const Greeting = () => {
     if (userData) {
-      console.log(userData);
       const stats = userData.anime_statistics;
       return (
         <>
@@ -14,7 +13,7 @@ const Home = ({ userData }) => {
               <li className="list-group-item d-flex justify-content-between align-items-center">
                 Mean Score:
                 <span className="badge badge-danger badge-pill">
-                  {stats.mean_score}
+                  {stats.mean_score.toFixed(2).toLocaleString()}
                 </span>
               </li>
             </h5>
@@ -22,7 +21,7 @@ const Home = ({ userData }) => {
               <li className="list-group-item d-flex justify-content-between align-items-center">
                 Number of Episodes Watched:
                 <span className="badge badge-success badge-pill">
-                  {stats.num_episodes}
+                  {stats.num_episodes.toLocaleString()}
                 </span>
               </li>
             </h5>
@@ -30,7 +29,7 @@ const Home = ({ userData }) => {
               <li className="list-group-item d-flex justify-content-between align-items-center">
                 Number of Hours Watched:
                 <span className="badge badge-info badge-pill">
-                  {Math.round(stats.num_days * 24)}
+                  {Math.round(stats.num_days * 24).toLocaleString()}
                 </span>
               </li>
             </h5>
@@ -38,7 +37,7 @@ const Home = ({ userData }) => {
               <li className="list-group-item d-flex justify-content-between align-items-center">
                 Number of Anime Finished:
                 <span className="badge badge-primary badge-pill">
-                  {stats.num_items_completed}
+                  {stats.num_items_completed.toLocaleString()}
                 </span>
               </li>
             </h5>
