@@ -24,17 +24,14 @@ const Login = (props) => {
         code: params.get('code'),
         state: params.get('state'),
       }),
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
     };
     fetch(sessionURL, options)
       .then((response) => {
-        return response.json();
-      })
-      .then((response) => {
-        localStorage.setItem('auth-token', response.access_token);
-        props.setUserData(response.access_token);
+        localStorage.setItem('logged_in', true);
         setSuccess(1);
         setTimeout(() => {
           window.location = '/';
@@ -42,7 +39,6 @@ const Login = (props) => {
       })
       .catch((response) => {
         setSuccess(-1);
-        console.log(response);
         setTimeout(() => {
           window.location = '/';
         }, 2000);

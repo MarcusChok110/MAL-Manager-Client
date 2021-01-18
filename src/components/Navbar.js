@@ -15,7 +15,7 @@ const Navbar = (props) => {
   // action listener for logout button
   const logout = () => {
     props.setUser('');
-    localStorage.setItem('auth-token', '');
+    localStorage.setItem('logged_in', false);
     window.location = '/';
   };
 

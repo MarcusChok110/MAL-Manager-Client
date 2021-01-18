@@ -21,18 +21,12 @@ function App() {
 
   // grab auth token from localStorage on component mount
   useEffect(() => {
-    const authToken = localStorage.getItem('auth-token');
-
-    if (authToken && !userToken) {
-      setUserToken(authToken);
-    } else {
-      setUserToken('');
-    }
+    setUserToken(localStorage.getItem('logged_in') === 'true');
   }, []);
 
   // every time auth token updates, grab user info from MAL
   useEffect(() => {
-    if (userToken === '' || userToken === undefined) {
+    if (!userToken) {
       setUserData('');
       setAnimeList('');
     } else {
@@ -42,21 +36,10 @@ function App() {
   }, [userToken]);
 
   const fetchUserData = async () => {
-    // // check if local storage has user data
-    // const data = localStorage.getItem('userData');
-
-    // if (data) {
-    //   return setUserData(JSON.parse(data));
-    // }
-
-    // console.log(userToken);
-
     // // if not, fetch it from API
     const url = 'http://localhost:8888/user';
     const options = {
-      headers: {
-        Authorization: `Bearer ${userToken}`,
-      },
+      credentials: 'include',
     };
     const response = await fetch(url, options);
     const json = await response.json();
@@ -64,18 +47,10 @@ function App() {
   };
 
   const fetchAnimeList = async () => {
-    // // check if local storage has animelist
-    // const data = localStorage.getItem('animeList');
-    // if (data) {
-    //   return setAnimeList(JSON.parse(data));
-    // }
-
     // // if not, fetch it from API
     const url = 'http://localhost:8888/animelist';
     const options = {
-      headers: {
-        Authorization: `Bearer ${userToken}`,
-      },
+      credentials: 'include',
     };
     const response = await fetch(url, options);
     const json = await response.json();
