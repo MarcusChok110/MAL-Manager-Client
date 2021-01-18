@@ -8,7 +8,6 @@ const Navbar = (props) => {
     const loginURL = 'http://localhost:8888';
     const link = await fetch(`${loginURL}/session/new`);
     const json = await link.json();
-
     // redirect to login url
     window.location = json.url;
   };
@@ -17,7 +16,6 @@ const Navbar = (props) => {
   const logout = () => {
     props.setUser('');
     localStorage.setItem('auth-token', '');
-    localStorage.setItem('userData', '');
     window.location = '/';
   };
 
@@ -85,8 +83,7 @@ const Navbar = (props) => {
           </li>
           <li className="nav-item dropdown">
             <Link
-              //to="#"
-              to="/"
+              to="#"
               className="nav-link dropdown-toggle"
               id="navdrop"
               data-toggle="dropdown"
