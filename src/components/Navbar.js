@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Navbar = (props) => {
   // action listener for login button
@@ -9,15 +10,18 @@ const Navbar = (props) => {
     const json = await link.json();
 
     // redirect to login url
-    window.location.href = json.url;
+    window.location = json.url;
   };
 
   // action listener for logout button
   const logout = () => {
     props.setUser('');
     localStorage.setItem('auth-token', '');
+    localStorage.setItem('userData', '');
+    window.location = '/';
   };
 
+  // profile component for top right of navbar
   const Profile = () => {
     // if user is logged in, display profile and logout button
     if (props.user) {
@@ -57,9 +61,9 @@ const Navbar = (props) => {
   return (
     <nav className="navbar navbar-expand-md bg-dark navbar-dark sticky-top">
       {/* Brand */}
-      <a href="/" className="navbar-brand">
+      <Link to="/" className="navbar-brand">
         MyAnimeList Manager
-      </a>
+      </Link>
 
       {/* Toggler */}
       <button
@@ -75,14 +79,14 @@ const Navbar = (props) => {
       <div className="collapse navbar-collapse" id="collapsibleNavbar">
         <ul className="navbar-nav">
           <li className="nav-item">
-            <a className="nav-link" href="/">
+            <Link className="nav-link" to="/">
               Home
-            </a>
+            </Link>
           </li>
           <li className="nav-item dropdown">
-            <a
-              //href="#"
-              href="/"
+            <Link
+              //to="#"
+              to="/"
               className="nav-link dropdown-toggle"
               id="navdrop"
               data-toggle="dropdown"
@@ -90,25 +94,25 @@ const Navbar = (props) => {
               aria-expanded="false"
             >
               Lists
-            </a>
+            </Link>
             <div className="dropdown-menu" aria-labelledby="navdrop">
-              <a href="/animelist" className="dropdown-item">
+              <Link to="/animelist" className="dropdown-item">
                 AnimeList
-              </a>
-              <a href="/mangalist" className="dropdown-item">
+              </Link>
+              <Link to="/mangalist" className="dropdown-item">
                 MangaList
-              </a>
+              </Link>
             </div>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/search">
+            <Link className="nav-link" to="/search">
               Search
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/schedule">
+            <Link className="nav-link" to="/schedule">
               Schedule
-            </a>
+            </Link>
           </li>
         </ul>
         <Profile />
