@@ -15,13 +15,14 @@ import Login from './api/Login';
 
 function App() {
   // state for user info from MyAnimeList
-  const [userToken, setUserToken] = useState('');
+  const [userToken, setUserToken] = useState();
   const [userData, setUserData] = useState();
-  const [animeList, setAnimeList] = useState('');
+  const [animeList, setAnimeList] = useState();
 
   // grab auth token from localStorage on component mount
   useEffect(() => {
     const authToken = localStorage.getItem('auth-token');
+
     if (authToken && !userToken) {
       setUserToken(authToken);
     } else {
@@ -31,7 +32,7 @@ function App() {
 
   // every time auth token updates, grab user info from MAL
   useEffect(() => {
-    if (userToken === '') {
+    if (userToken === '' || userToken === undefined) {
       setUserData('');
       setAnimeList('');
     } else {
@@ -41,13 +42,16 @@ function App() {
   }, [userToken]);
 
   const fetchUserData = async () => {
-    // check if local storage has user data
-    const data = localStorage.getItem('userData');
-    if (data) {
-      return setUserData(JSON.parse(data));
-    }
+    // // check if local storage has user data
+    // const data = localStorage.getItem('userData');
 
-    // if not, fetch it from API
+    // if (data) {
+    //   return setUserData(JSON.parse(data));
+    // }
+
+    // console.log(userToken);
+
+    // // if not, fetch it from API
     const url = 'http://localhost:8888/user';
     const options = {
       headers: {
@@ -57,10 +61,26 @@ function App() {
     const response = await fetch(url, options);
     const json = await response.json();
     setUserData(json);
-    localStorage.setItem('userData', JSON.stringify(json));
   };
 
-  const fetchAnimeList = async () => {};
+  const fetchAnimeList = async () => {
+    // // check if local storage has animelist
+    // const data = localStorage.getItem('animeList');
+    // if (data) {
+    //   return setAnimeList(JSON.parse(data));
+    // }
+
+    // // if not, fetch it from API
+    const url = 'http://localhost:8888/animelist';
+    const options = {
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    };
+    const response = await fetch(url, options);
+    const json = await response.json();
+    setAnimeList(json);
+  };
 
   return (
     <div>
@@ -74,7 +94,13 @@ function App() {
                 path="/"
                 render={(props) => <Home {...props} userData={userData} />}
               />
-              <Route exact path="/animelist" component={AnimeList} />
+              <Route
+                exact
+                path="/animelist"
+                render={(props) => (
+                  <AnimeList {...props} animeList={animeList} />
+                )}
+              />
               <Route exact path="/mangalist" component={MangaList} />
               <Route exact path="/search" component={Search} />
               <Route exact path="/schedule" component={Schedule} />
