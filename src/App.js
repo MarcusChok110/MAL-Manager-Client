@@ -5,7 +5,6 @@ import {
   Home,
   Navbar,
   AnimeList,
-  MangaList,
   Search,
   Schedule,
   SearchAnime,
@@ -76,7 +75,6 @@ function App() {
                   <AnimeList {...props} animeList={animeList} />
                 )}
               />
-              <Route exact path="/mangalist" component={MangaList} />
               <Route exact path="/search" component={Search} />
               <Route exact path="/schedule" component={Schedule} />
               <Route
