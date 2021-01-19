@@ -88,7 +88,11 @@ function App() {
                 )}
               />
               <Route exact path="/search/anime" component={SearchAnime} />
-              <Route exact path="/anime/:id" component={Anime} />
+              <Route
+                exact
+                path="/anime/:id"
+                render={(props) => <Anime {...props} animeList={animeList} />}
+              />
               <Route component={NotFound} />
             </Switch>
           </div>
