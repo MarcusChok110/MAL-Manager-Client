@@ -1,44 +1,72 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const AnimeList = ({ animeList }) => {
   const titleClass = 'display-4';
 
-  const Watching = ({ list }) => {
-    return (
-      <div>
-        <h2 className={titleClass}>Currently Watching</h2>
-      </div>
-    );
-  };
+  const Category = ({ list, title }) => {
+    const formatScore = (score) => (score === 0 ? '-' : score);
+    const formatEpisodes = (episodes) => episodes.toLocaleString();
 
-  const Completed = ({ list }) => {
     return (
       <div>
-        <h2 className={titleClass}>Completed</h2>
-      </div>
-    );
-  };
+        <h2 className={titleClass}>{title}</h2>
+        {(() => {
+          if (list.length === 0) {
+            return <p className="lead">No Anime found for this category!</p>;
+          } else {
+            return list
+              .reduce((acc, val, index) => {
+                // 4 columns per row
+                const rowIndex = Math.floor(index / 4);
 
-  const OnHold = ({ list }) => {
-    return (
-      <div>
-        <h2 className={titleClass}>On Hold</h2>
-      </div>
-    );
-  };
+                // initialize rows with empty array
+                if (!acc[rowIndex]) {
+                  acc[rowIndex] = [];
+                }
 
-  const Dropped = ({ list }) => {
-    return (
-      <div>
-        <h2 className={titleClass}>Dropped</h2>
-      </div>
-    );
-  };
-
-  const PlanToWatch = ({ list }) => {
-    return (
-      <div>
-        <h2 className={titleClass}>Plan to Watch</h2>
+                acc[rowIndex].push(
+                  <div className="card" key={index}>
+                    <img
+                      src={val.node.main_picture.medium}
+                      alt={`${val.node.title} Poster`}
+                      className="card-img-top img-fluid"
+                    />
+                    <h6 className="card-title card-header text-center">
+                      <Link to={`/anime/${val.node.id}`}>{val.node.title}</Link>
+                    </h6>
+                    <ul className="list-group list-group-flush">
+                      <li className="list-group-item d-flex justify-content-between align-items-center">
+                        Score:
+                        <span className="badge badge-info badge-pill">
+                          {formatScore(val.list_status.score)}
+                        </span>
+                      </li>
+                      <li className="list-group-item d-flex justify-content-between align-items-center">
+                        Episodes Watched:
+                        <span className="badge badge-info badge-pill">
+                          {formatEpisodes(val.list_status.num_episodes_watched)}
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
+                );
+                return acc;
+              }, [])
+              .map((val, index) => {
+                while (val.length < 4) {
+                  val.push(
+                    <div className="card invisible" key={val.length}></div>
+                  );
+                }
+                return (
+                  <div className="card-deck mb-2" key={index}>
+                    {val}
+                  </div>
+                );
+              });
+          }
+        })()}
       </div>
     );
   };
@@ -55,15 +83,15 @@ const AnimeList = ({ animeList }) => {
 
       return (
         <div>
-          <Watching list={watching} />
+          <Category list={watching} title="Currently Watching" />
           <hr />
-          <Completed list={completed} />
+          <Category list={completed} title="Completed" />
           <hr />
-          <OnHold list={on_hold} />
+          <Category list={on_hold} title="On Hold" />
           <hr />
-          <Dropped list={dropped} />
+          <Category list={dropped} title="Dropped" />
           <hr />
-          <PlanToWatch list={plan_to_watch} />
+          <Category list={plan_to_watch} title="Plan To Watch" />
         </div>
       );
     } else if (animeList === '') {
