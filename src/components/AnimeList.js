@@ -40,7 +40,7 @@ const AnimeList = ({ animeList }) => {
                       </h6>
                       <ul className="list-group list-group-flush">
                         <li className="list-group-item d-flex justify-content-between align-items-center">
-                          Score:
+                          Your Score:
                           <span className="badge badge-info badge-pill">
                             {formatScore(val.list_status.score)}
                           </span>
