@@ -43,6 +43,20 @@ const SearchAnime = (props) => {
                     <p className="card-text">{val.synopsis}</p>
                   </div>
                 </div>
+                <ul className="list-group list-group-flush">
+                  <li className="list-group-item d-flex justify-content-between align-items-center">
+                    Score:
+                    <span className="badge badge-warning badge-pill">
+                      {val.score}
+                    </span>
+                  </li>
+                  <li className="list-group-item d-flex justify-content-between align-items-center">
+                    Members:
+                    <span className="badge badge-warning badge-pill">
+                      {val.members.toLocaleString()}
+                    </span>
+                  </li>
+                </ul>
               </div>
             </div>
           );
