@@ -109,8 +109,12 @@ const Search = (props) => {
           );
           return acc;
         }, [])
-        .map((val) => {
-          return <div className="row">{val}</div>;
+        .map((val, index) => {
+          return (
+            <div className="row" key={index}>
+              {val}
+            </div>
+          );
         });
     };
 
