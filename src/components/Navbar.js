@@ -90,25 +90,10 @@ const Navbar = (props) => {
               Home
             </Link>
           </li>
-          <li className="nav-item dropdown">
-            <Link
-              to="#"
-              className="nav-link dropdown-toggle"
-              id="navdrop"
-              data-toggle="dropdown"
-              //aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Lists
+          <li className="nav-item">
+            <Link className="nav-link" to="/animelist">
+              Anime List
             </Link>
-            <div className="dropdown-menu" aria-labelledby="navdrop">
-              <Link to="/animelist" className="dropdown-item">
-                AnimeList
-              </Link>
-              <Link to="/mangalist" className="dropdown-item">
-                MangaList
-              </Link>
-            </div>
           </li>
           <li className="nav-item">
             <Link className="nav-link" to="/search">
