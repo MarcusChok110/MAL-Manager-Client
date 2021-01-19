@@ -5,5 +5,15 @@ import Search from './Search';
 import Schedule from './Schedule';
 import SearchAnime from './SearchAnime';
 import Anime from './Anime';
+import NotFound from './NotFound';
 
-export { Home, Navbar, AnimeList, Search, Schedule, SearchAnime, Anime };
+export {
+  Home,
+  Navbar,
+  AnimeList,
+  Search,
+  Schedule,
+  SearchAnime,
+  Anime,
+  NotFound,
+};
