@@ -26,41 +26,42 @@ const AnimeList = ({ animeList }) => {
                 }
 
                 acc[rowIndex].push(
-                  <div className="card" key={index}>
-                    <img
-                      src={val.node.main_picture.medium}
-                      alt={`${val.node.title} Poster`}
-                      className="card-img-top img-fluid"
-                    />
-                    <h6 className="card-title card-header text-center">
-                      <Link to={`/anime/${val.node.id}`}>{val.node.title}</Link>
-                    </h6>
-                    <ul className="list-group list-group-flush">
-                      <li className="list-group-item d-flex justify-content-between align-items-center">
-                        Score:
-                        <span className="badge badge-info badge-pill">
-                          {formatScore(val.list_status.score)}
-                        </span>
-                      </li>
-                      <li className="list-group-item d-flex justify-content-between align-items-center">
-                        Episodes Watched:
-                        <span className="badge badge-info badge-pill">
-                          {formatEpisodes(val.list_status.num_episodes_watched)}
-                        </span>
-                      </li>
-                    </ul>
+                  <div className="col-6 col-lg-3 mb-3" key={index}>
+                    <div className="card">
+                      <img
+                        src={val.node.main_picture.medium}
+                        alt={`${val.node.title} Poster`}
+                        className="card-img-top img-fluid"
+                      />
+                      <h6 className="card-title card-header text-center">
+                        <Link to={`/anime/${val.node.id}`}>
+                          {val.node.title}
+                        </Link>
+                      </h6>
+                      <ul className="list-group list-group-flush">
+                        <li className="list-group-item d-flex justify-content-between align-items-center">
+                          Score:
+                          <span className="badge badge-info badge-pill">
+                            {formatScore(val.list_status.score)}
+                          </span>
+                        </li>
+                        <li className="list-group-item d-flex justify-content-between align-items-center">
+                          Episodes Watched:
+                          <span className="badge badge-info badge-pill">
+                            {formatEpisodes(
+                              val.list_status.num_episodes_watched
+                            )}
+                          </span>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 );
                 return acc;
               }, [])
               .map((val, index) => {
-                while (val.length < 4) {
-                  val.push(
-                    <div className="card invisible" key={val.length}></div>
-                  );
-                }
                 return (
-                  <div className="card-deck mb-2" key={index}>
+                  <div className="row" key={index}>
                     {val}
                   </div>
                 );
