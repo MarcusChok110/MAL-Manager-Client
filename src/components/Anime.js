@@ -26,14 +26,22 @@ const UPDATING_ENUMS = {
   NOT_UPDATING: 0,
   UPDATING: 1,
   FINISHED: 2,
+  ERROR: 3,
 };
 
 const Anime = ({ match, animeList }) => {
   const [data, setData] = useState();
   const [updating, setUpdating] = useState(0);
+
+  // refs for buttons
   const updateBtnRef = useRef(null);
   const resetBtnRef = useRef(null);
   const deleteBtnRef = useRef(null);
+
+  // refs for form fields
+  const formRef = useRef(null);
+
+  // misc refs
   const bottomDivRef = useRef(null);
 
   useEffect(() => {
@@ -41,6 +49,7 @@ const Anime = ({ match, animeList }) => {
       case UPDATING_ENUMS.NOT_UPDATING:
         break;
       case UPDATING_ENUMS.UPDATING:
+      case UPDATING_ENUMS.FINISHED:
         bottomDivRef.current.scrollIntoView({ behavior: 'smooth' });
         setBtnEnabled(false);
         break;
@@ -60,7 +69,6 @@ const Anime = ({ match, animeList }) => {
         credentials: 'include',
       };
 
-      console.log(url);
       setUpdating(UPDATING_ENUMS.UPDATING);
       fetch(url, options)
         .then((response) => response.json())
@@ -70,16 +78,61 @@ const Anime = ({ match, animeList }) => {
             setTimeout(() => {
               window.location.reload();
             }, 2000);
+          } else {
+            setUpdating(UPDATING_ENUMS.ERROR);
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
           }
         });
-
-      console.log('Delete entry');
     } else {
       alert("You can't delete an entry that doesn't exist!");
     }
   };
 
-  const updateEntry = () => {};
+  const updateEntry = (e) => {
+    e.preventDefault();
+
+    const url = `http://localhost:8888/animelist/${match.params.id}`;
+    const requestBody = formToJSON(formRef);
+    const options = {
+      method: 'PUT',
+      body: JSON.stringify(requestBody),
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    setUpdating(UPDATING_ENUMS.UPDATING);
+    fetch(url, options)
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.success === true) {
+          setUpdating(UPDATING_ENUMS.FINISHED);
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        } else {
+          setUpdating(UPDATING_ENUMS.ERROR);
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        }
+      });
+  };
+
+  // converts form data to an object
+  function formToJSON(ref) {
+    const data = new FormData(ref.current);
+    const json = {};
+
+    for (let item of data.entries()) {
+      json[item[0]] = item[1];
+    }
+
+    return json;
+  }
 
   // enable / disable the update/reset/delete buttons
   function setBtnEnabled(bool) {
@@ -97,6 +150,7 @@ const Anime = ({ match, animeList }) => {
         return <h2>Updating...</h2>;
       case UPDATING_ENUMS.FINISHED:
         return <h2 className="text-success">Updated Successfully!</h2>;
+      case UPDATING_ENUMS.ERROR:
       default:
         return <h2 className="text-danger">Something went wrong!</h2>;
     }
@@ -121,6 +175,7 @@ const Anime = ({ match, animeList }) => {
                 ? statusData.list_status.status === STATUS_ENUMS[key]
                 : false
             }
+            required
           />
           <label className="form-check-label" htmlFor={radios.length}>
             {key}
@@ -205,10 +260,14 @@ const Anime = ({ match, animeList }) => {
       return <p className="lead">Please log in to edit your anime list!</p>;
     } else {
       const listData = inList(list);
-      console.log(listData);
       return (
         <>
-          <form className="border rounded p-4" action="">
+          <form
+            className="border rounded p-4"
+            action=""
+            ref={formRef}
+            onSubmit={updateEntry}
+          >
             <fieldset className="form-group">
               <div className="row">
                 <legend className="col-form-label col-5 col-md-4 col-lg-3 pt-0">
@@ -231,6 +290,7 @@ const Anime = ({ match, animeList }) => {
                 id="scoreSelect"
                 className="form-control col-6 col-md-4 col-lg-3 ml-2"
                 defaultValue={listData[0] ? listData[0].list_status.score : 0}
+                required
               >
                 <ScoreOptions />
               </select>
@@ -253,6 +313,7 @@ const Anime = ({ match, animeList }) => {
                 defaultValue={
                   listData[0] ? listData[0].list_status.num_episodes_watched : 0
                 }
+                required
               />
               <div className="col-2 col-lg-1 pt-1">
                 / {data.episodes ? data.episodes : 0}
@@ -440,6 +501,7 @@ const Anime = ({ match, animeList }) => {
     );
     const result = await response.json();
     setData(result);
+    console.log(result);
   };
 
   return (
