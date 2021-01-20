@@ -47,8 +47,91 @@ const Anime = ({ match, animeList }) => {
             </div>
           </div>
           <hr />
+          <div className="row">
+            <ul className="col-12 col-md-4 list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <h5 className="lead">Score</h5>
+                <h5>
+                  <span class="">{data.score}</span>
+                </h5>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <h5 className="lead">Users Scored</h5>
+                <h5>
+                  <span class="">{data.scored_by.toLocaleString()}</span>
+                </h5>
+              </li>
+            </ul>
+            <ul className="col-12 col-md-4 list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <h5 className="lead">Ranked</h5>
+                <h5>
+                  <span class="">{`#${data.rank.toLocaleString()}`}</span>
+                </h5>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <h5 className="lead">Popularity</h5>
+                <h5>
+                  <span class="">{`#${data.popularity.toLocaleString()}`}</span>
+                </h5>
+              </li>
+            </ul>
+            <ul className="col-12 col-md-4 list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <h5 className="lead">Members</h5>
+                <h5>
+                  <span class="">{data.members.toLocaleString()}</span>
+                </h5>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <h5 className="lead">Favourites</h5>
+                <h5>
+                  <span class="">{data.favorites.toLocaleString()}</span>
+                </h5>
+              </li>
+            </ul>
+          </div>
+          <hr />
+          <h3>Information</h3>
+          <div className="table-responsive">
+            <table className="table table-striped">
+              <tbody>
+                <tr>
+                  <th scope="col">Type:</th>
+                  <td>{data.type}</td>
+                </tr>
+                <tr>
+                  <th scope="col">Episodes:</th>
+                  <td>{data.episodes}</td>
+                </tr>
+                <tr>
+                  <th scope="col">Status:</th>
+                  <td>{data.status}</td>
+                </tr>
+                <tr>
+                  <th scope="col">Aired:</th>
+                  <td>{data.aired.string}</td>
+                </tr>
+                <tr>
+                  <th scope="col">Genres:</th>
+                  <td>
+                    {data.genres
+                      .map((val) => val.name)
+                      .toString()
+                      .replaceAll(',', ', ')}
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="col">Rating:</th>
+                  <td>{data.rating}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <hr />
           <h3>Edit Anime List Status</h3>
           <ListForm list={animeList} />
+          <div className="mb-5"></div>
         </>
       );
     }
