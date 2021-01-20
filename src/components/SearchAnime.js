@@ -27,7 +27,7 @@ const SearchAnime = (props) => {
 
           acc[rowIndex].push(
             <div className="col-6 col-lg-3 mb-3" key={index}>
-              <div className="card" style={{ height: '680px' }}>
+              <div className="card" style={{ height: '700px' }}>
                 <img
                   src={val.image_url}
                   alt={`${val.title} Poster`}
@@ -46,15 +46,19 @@ const SearchAnime = (props) => {
                 <ul className="list-group list-group-flush">
                   <li className="list-group-item d-flex justify-content-between align-items-center">
                     Score:
-                    <span className="badge badge-warning badge-pill">
-                      {val.score}
-                    </span>
+                    <h5>
+                      <span className="badge badge-warning badge-pill">
+                        {val.score}
+                      </span>
+                    </h5>
                   </li>
                   <li className="list-group-item d-flex justify-content-between align-items-center">
                     Members:
-                    <span className="badge badge-warning badge-pill">
-                      {val.members.toLocaleString()}
-                    </span>
+                    <h5>
+                      <span className="badge badge-warning badge-pill">
+                        {val.members.toLocaleString()}
+                      </span>
+                    </h5>
                   </li>
                 </ul>
               </div>
