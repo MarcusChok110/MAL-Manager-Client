@@ -55,22 +55,40 @@ const Anime = ({ match, animeList }) => {
   const deleteEntry = () => {
     if (animeList && inList(animeList).length > 0) {
       const url = `http://localhost:8888/animelist/${match.params.id}`;
-      const options = {};
+      const options = {
+        method: 'DELETE',
+        credentials: 'include',
+      };
+
+      console.log(url);
       setUpdating(UPDATING_ENUMS.UPDATING);
+      fetch(url, options)
+        .then((response) => response.json())
+        .then((response) => {
+          if (response.success === true) {
+            setUpdating(UPDATING_ENUMS.FINISHED);
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          }
+        });
+
       console.log('Delete entry');
     } else {
-      alert("You cannot delete an entry that doesn't exist!");
+      alert("You can't delete an entry that doesn't exist!");
     }
   };
 
   const updateEntry = () => {};
 
+  // enable / disable the update/reset/delete buttons
   function setBtnEnabled(bool) {
     updateBtnRef.current.disabled = !bool;
     resetBtnRef.current.disabled = !bool;
     deleteBtnRef.current.disabled = !bool;
   }
 
+  // shows update message when Update/Delete buttons are clicked
   const UpdateLabel = () => {
     switch (updating) {
       case UPDATING_ENUMS.NOT_UPDATING:
@@ -78,7 +96,7 @@ const Anime = ({ match, animeList }) => {
       case UPDATING_ENUMS.UPDATING:
         return <h2>Updating...</h2>;
       case UPDATING_ENUMS.FINISHED:
-        return <h2 className="text-success">Update Finished!</h2>;
+        return <h2 className="text-success">Updated Successfully!</h2>;
       default:
         return <h2 className="text-danger">Something went wrong!</h2>;
     }
@@ -133,35 +151,35 @@ const Anime = ({ match, animeList }) => {
   const DeleteModal = () => {
     return (
       <div
-        class="modal fade"
+        className="modal fade"
         id="deleteModal"
-        tabindex="-1"
+        tabIndex="-1"
         role="dialog"
         aria-labelledby="deleteModalLabel"
         aria-hidden="true"
       >
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="deleteModalLabel">
+        <div className="modal-dialog" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="deleteModalLabel">
                 Confirm Delete
               </h5>
               <button
                 type="button"
-                class="close"
+                className="close"
                 data-dismiss="modal"
                 aria-label="Close"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body text-left">
+            <div className="modal-body text-left">
               Are you sure you want to delete your list entry?
             </div>
-            <div class="modal-footer">
+            <div className="modal-footer">
               <button
                 type="button"
-                class="btn btn-secondary"
+                className="btn btn-secondary"
                 data-dismiss="modal"
               >
                 Cancel
@@ -169,7 +187,7 @@ const Anime = ({ match, animeList }) => {
               <button
                 onClick={deleteEntry}
                 type="button"
-                class="btn btn-danger"
+                className="btn btn-danger"
                 data-dismiss="modal"
               >
                 Delete
@@ -263,7 +281,7 @@ const Anime = ({ match, animeList }) => {
               <div className="col-4 text-right">
                 <button
                   type="button"
-                  class="btn btn-danger"
+                  className="btn btn-danger"
                   data-toggle="modal"
                   data-target="#deleteModal"
                   ref={deleteBtnRef}
@@ -306,7 +324,7 @@ const Anime = ({ match, animeList }) => {
               <h3 className="display-4 text-center mb-2">{data.title}</h3>
               <div className="card card-block p-2">
                 <h5>Synopsis</h5>
-                <hr className="mt-0 mb-1" />
+                <hr className="mt-0 mb-2" />
                 <p>{data.synopsis}</p>
               </div>
             </div>
