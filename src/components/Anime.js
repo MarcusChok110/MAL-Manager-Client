@@ -86,8 +86,10 @@ const Anime = ({ match, animeList }) => {
           <form className="border rounded p-4" action="">
             <fieldset className="form-group">
               <div className="row">
-                <legend className="col-form-label col-2 pt-0">Status</legend>
-                <div className="col-10">
+                <legend className="col-form-label col-5 col-md-4 col-lg-3 pt-0">
+                  Status
+                </legend>
+                <div className="col-7">
                   <StatusRadio listData={listData} />
                 </div>
               </div>
@@ -95,18 +97,56 @@ const Anime = ({ match, animeList }) => {
             <div className="form-group row">
               <label
                 htmlFor="scoreSelect"
-                className="col-form-label col-2 pt-0"
+                className="col-form-label col-5 col-md-4 col-lg-3"
               >
                 Score
               </label>
               <select
                 name=""
                 id="scoreSelect"
-                className="form-control col-6 ml-2"
-                defaultValue={listData ? listData[0].list_status.score : 0}
+                className="form-control col-6 col-md-4 col-lg-3 ml-2"
+                defaultValue={listData[0] ? listData[0].list_status.score : 0}
               >
                 <ScoreOptions />
               </select>
+            </div>
+            <div className="form-group row">
+              <label
+                htmlFor="watched"
+                className="col-form-label col-5 col-md-4 col-lg-3"
+              >
+                Episodes Watched
+              </label>
+              <input
+                className="form-control col-6 col-md-4 col-lg-3 ml-2 pl-3"
+                type="number"
+                name="num_watched_episodes"
+                id="watched"
+                min="0"
+                max={data.episodes ? data.episodes : 0}
+                step="1"
+                defaultValue={
+                  listData[0] ? listData[0].list_status.num_episodes_watched : 0
+                }
+              />
+            </div>
+            <hr />
+            <div className="row">
+              <div className="col-4">
+                <button className="btn btn-primary" type="submit">
+                  Submit
+                </button>
+              </div>
+              <div className="col-4 text-center">
+                <button className="btn btn-warning" type="reset">
+                  Reset
+                </button>
+              </div>
+              <div className="col-4 text-right">
+                <button className="btn btn-danger" type="button">
+                  Delete
+                </button>
+              </div>
             </div>
           </form>
         </>
@@ -139,7 +179,11 @@ const Anime = ({ match, animeList }) => {
             </div>
             <div className="col-md-12 col-lg-9">
               <h3 className="display-4 text-center mb-2">{data.title}</h3>
-              <p className="card card-block p-2">{data.synopsis}</p>
+              <div className="card card-block p-2">
+                <h5>Synopsis</h5>
+                <hr className="mt-0 mb-1" />
+                <p>{data.synopsis}</p>
+              </div>
             </div>
           </div>
           <hr />
