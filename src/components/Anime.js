@@ -52,13 +52,15 @@ const Anime = ({ match, animeList }) => {
               <li class="list-group-item d-flex justify-content-between align-items-center">
                 <h5 className="lead">Score</h5>
                 <h5>
-                  <span class="">{data.score}</span>
+                  <span class="">{data.score ? data.score : 'N/A'}</span>
                 </h5>
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center">
                 <h5 className="lead">Users Scored</h5>
                 <h5>
-                  <span class="">{data.scored_by.toLocaleString()}</span>
+                  <span class="">
+                    {data.scored_by ? data.scored_by.toLocaleString() : 'N/A'}
+                  </span>
                 </h5>
               </li>
             </ul>
@@ -66,13 +68,19 @@ const Anime = ({ match, animeList }) => {
               <li class="list-group-item d-flex justify-content-between align-items-center">
                 <h5 className="lead">Ranked</h5>
                 <h5>
-                  <span class="">{`#${data.rank.toLocaleString()}`}</span>
+                  <span class="">{`${
+                    data.rank ? '#' + data.rank.toLocaleString() : 'N/A'
+                  }`}</span>
                 </h5>
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center">
                 <h5 className="lead">Popularity</h5>
                 <h5>
-                  <span class="">{`#${data.popularity.toLocaleString()}`}</span>
+                  <span class="">{`${
+                    data.popularity
+                      ? '#' + data.popularity.toLocaleString()
+                      : 'N/A'
+                  }`}</span>
                 </h5>
               </li>
             </ul>
@@ -80,13 +88,17 @@ const Anime = ({ match, animeList }) => {
               <li class="list-group-item d-flex justify-content-between align-items-center">
                 <h5 className="lead">Members</h5>
                 <h5>
-                  <span class="">{data.members.toLocaleString()}</span>
+                  <span class="">
+                    {data.members ? data.members.toLocaleString() : 'N/A'}
+                  </span>
                 </h5>
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center">
                 <h5 className="lead">Favourites</h5>
                 <h5>
-                  <span class="">{data.favorites.toLocaleString()}</span>
+                  <span class="">
+                    {data.favorites ? data.favorites.toLocaleString() : 'N/A'}
+                  </span>
                 </h5>
               </li>
             </ul>
