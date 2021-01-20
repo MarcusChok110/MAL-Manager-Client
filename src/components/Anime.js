@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const STATUS_ENUMS = {
   Watching: 'watching',
@@ -22,12 +22,67 @@ const SCORE_ENUMS = {
   '(1) Appalling': 1,
 };
 
+const UPDATING_ENUMS = {
+  NOT_UPDATING: 0,
+  UPDATING: 1,
+  FINISHED: 2,
+};
+
 const Anime = ({ match, animeList }) => {
   const [data, setData] = useState();
+  const [updating, setUpdating] = useState(0);
+  const updateBtnRef = useRef(null);
+  const resetBtnRef = useRef(null);
+  const deleteBtnRef = useRef(null);
+  const bottomDivRef = useRef(null);
+
+  useEffect(() => {
+    switch (updating) {
+      case UPDATING_ENUMS.NOT_UPDATING:
+        break;
+      case UPDATING_ENUMS.UPDATING:
+        bottomDivRef.current.scrollIntoView({ behavior: 'smooth' });
+        setBtnEnabled(false);
+        break;
+      default:
+    }
+  }, [updating]);
 
   useEffect(() => {
     fetchJSON();
   }, []);
+
+  const deleteEntry = () => {
+    if (animeList && inList(animeList).length > 0) {
+      const url = `http://localhost:8888/animelist/${match.params.id}`;
+      const options = {};
+      setUpdating(UPDATING_ENUMS.UPDATING);
+      console.log('Delete entry');
+    } else {
+      alert("You cannot delete an entry that doesn't exist!");
+    }
+  };
+
+  const updateEntry = () => {};
+
+  function setBtnEnabled(bool) {
+    updateBtnRef.current.disabled = !bool;
+    resetBtnRef.current.disabled = !bool;
+    deleteBtnRef.current.disabled = !bool;
+  }
+
+  const UpdateLabel = () => {
+    switch (updating) {
+      case UPDATING_ENUMS.NOT_UPDATING:
+        return null;
+      case UPDATING_ENUMS.UPDATING:
+        return <h2>Updating...</h2>;
+      case UPDATING_ENUMS.FINISHED:
+        return <h2 className="text-success">Update Finished!</h2>;
+      default:
+        return <h2 className="text-danger">Something went wrong!</h2>;
+    }
+  };
 
   // status radio buttons for form
   const StatusRadio = ({ listData }) => {
@@ -74,6 +129,58 @@ const Anime = ({ match, animeList }) => {
     return options;
   };
 
+  // modal which appears when delete button is clicked
+  const DeleteModal = () => {
+    return (
+      <div
+        class="modal fade"
+        id="deleteModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="deleteModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteModalLabel">
+                Confirm Delete
+              </h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body text-left">
+              Are you sure you want to delete your list entry?
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={deleteEntry}
+                type="button"
+                class="btn btn-danger"
+                data-dismiss="modal"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   // form to update anime list status
   const ListForm = ({ list }) => {
     if (list === undefined || list === '') {
@@ -102,7 +209,7 @@ const Anime = ({ match, animeList }) => {
                 Score
               </label>
               <select
-                name=""
+                name="score"
                 id="scoreSelect"
                 className="form-control col-6 col-md-4 col-lg-3 ml-2"
                 defaultValue={listData[0] ? listData[0].list_status.score : 0}
@@ -118,7 +225,7 @@ const Anime = ({ match, animeList }) => {
                 Episodes Watched
               </label>
               <input
-                className="form-control col-6 col-md-4 col-lg-3 ml-2 pl-3"
+                className="form-control col-4 col-md-4 col-lg-3 ml-2 pl-3"
                 type="number"
                 name="num_watched_episodes"
                 id="watched"
@@ -129,23 +236,41 @@ const Anime = ({ match, animeList }) => {
                   listData[0] ? listData[0].list_status.num_episodes_watched : 0
                 }
               />
+              <div className="col-2 col-lg-1 pt-1">
+                / {data.episodes ? data.episodes : 0}
+              </div>
             </div>
             <hr />
             <div className="row">
               <div className="col-4">
-                <button className="btn btn-primary" type="submit">
-                  Submit
+                <button
+                  className="btn btn-primary"
+                  type="submit"
+                  ref={updateBtnRef}
+                >
+                  Update
                 </button>
               </div>
               <div className="col-4 text-center">
-                <button className="btn btn-warning" type="reset">
+                <button
+                  className="btn btn-warning"
+                  type="reset"
+                  ref={resetBtnRef}
+                >
                   Reset
                 </button>
               </div>
               <div className="col-4 text-right">
-                <button className="btn btn-danger" type="button">
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  data-toggle="modal"
+                  data-target="#deleteModal"
+                  ref={deleteBtnRef}
+                >
                   Delete
                 </button>
+                <DeleteModal />
               </div>
             </div>
           </form>
@@ -280,10 +405,12 @@ const Anime = ({ match, animeList }) => {
               </tbody>
             </table>
           </div>
-          <hr />
+          <hr className="mt-0" />
           <h3>Edit Anime List Status</h3>
           <ListForm list={animeList} />
-          <div className="mb-5"></div>
+          <div className="mb-4"></div>
+          <UpdateLabel />
+          <div className="mt-5" ref={bottomDivRef}></div>
         </>
       );
     }
