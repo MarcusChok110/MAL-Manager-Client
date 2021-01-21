@@ -77,7 +77,13 @@ function App() {
                 )}
               />
               <Route exact path="/search" component={Search} />
-              <Route exact path="/schedule" component={Schedule} />
+              <Route
+                exact
+                path="/schedule"
+                render={(props) => (
+                  <Schedule {...props} animeList={animeList} />
+                )}
+              />
               <Route
                 exact
                 path="/login"
