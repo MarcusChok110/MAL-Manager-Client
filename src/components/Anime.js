@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const STATUS_ENUMS = {
   Watching: 'watching',
@@ -262,12 +263,7 @@ const Anime = ({ match, animeList }) => {
       const listData = inList(list);
       return (
         <>
-          <form
-            className="border rounded p-4"
-            action=""
-            ref={formRef}
-            onSubmit={updateEntry}
-          >
+          <form className="border rounded p-4" action="" ref={formRef}>
             <fieldset className="form-group">
               <div className="row">
                 <legend className="col-form-label col-5 col-md-4 col-lg-3 pt-0">
@@ -324,8 +320,9 @@ const Anime = ({ match, animeList }) => {
               <div className="col-4">
                 <button
                   className="btn btn-primary"
-                  type="submit"
+                  type="button"
                   ref={updateBtnRef}
+                  onClick={updateEntry}
                 >
                   Update
                 </button>
@@ -365,6 +362,31 @@ const Anime = ({ match, animeList }) => {
     });
 
     return found ? found : false;
+  }
+
+  // converts related anime object to paragraph to be displayed
+  function paragraphFromRelated(relObj) {
+    if (Object.keys(relObj).length > 0) {
+      const arr = Object.values(relObj);
+
+      while (Array.isArray(arr[0])) {
+        const current = arr.shift();
+        arr.push(...current);
+      }
+
+      const filtered = arr.filter((val) => val.type === 'anime');
+
+      console.log(filtered);
+      return filtered.map((val, index) => {
+        return (
+          <a href={`/anime/${val.mal_id}`}>
+            {val.name + (index < filtered.length - 1 ? ', ' : '')}
+          </a>
+        );
+      });
+    } else {
+      return '';
+    }
   }
 
   const DataFormatted = () => {
@@ -480,6 +502,10 @@ const Anime = ({ match, animeList }) => {
                 <tr>
                   <th scope="col">Rating:</th>
                   <td>{data.rating}</td>
+                </tr>
+                <tr>
+                  <th scope="col">Related:</th>
+                  <td>{paragraphFromRelated(data.related)}</td>
                 </tr>
               </tbody>
             </table>
