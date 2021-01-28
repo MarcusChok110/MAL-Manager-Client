@@ -13,6 +13,11 @@ import {
 } from './components/index';
 import Login from './api/Login';
 
+const serverURL =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:8888'
+    : 'https://arcane-temple-45992.herokuapp.com';
+
 function App() {
   // state for user info from MyAnimeList
   const [userToken, setUserToken] = useState();
@@ -37,7 +42,7 @@ function App() {
 
   const fetchUserData = async () => {
     // // if not, fetch it from API
-    const url = 'http://localhost:8888/user';
+    const url = `${serverURL}/user`;
     const options = {
       credentials: 'include',
     };
@@ -48,7 +53,7 @@ function App() {
 
   const fetchAnimeList = async () => {
     // // if not, fetch it from API
-    const url = 'http://localhost:8888/animelist';
+    const url = `${serverURL}/animelist`;
     const options = {
       credentials: 'include',
     };

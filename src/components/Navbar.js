@@ -1,11 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+const serverURL =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:8888'
+    : 'https://arcane-temple-45992.herokuapp.com';
+
 const Navbar = (props) => {
   // action listener for login button
   const login = async () => {
     // get link to login from api
-    const loginURL = 'http://localhost:8888';
+    const loginURL = serverURL;
     const link = await fetch(`${loginURL}/session/new`);
     const json = await link.json();
     // redirect to login url
@@ -15,7 +20,7 @@ const Navbar = (props) => {
   // action listener for logout button
   const logout = () => {
     // send a post request to delete the cookie
-    const loginURL = 'http://localhost:8888';
+    const loginURL = serverURL;
     const options = {
       method: 'POST',
       credentials: 'include',

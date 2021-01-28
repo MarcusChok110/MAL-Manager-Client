@@ -1,5 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+const serverURL =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:8888'
+    : 'https://arcane-temple-45992.herokuapp.com';
+
 const STATUS_ENUMS = {
   Watching: 'watching',
   Completed: 'completed',
@@ -63,7 +68,7 @@ const Anime = ({ match, animeList }) => {
 
   const deleteEntry = () => {
     if (animeList && inList(animeList).length > 0) {
-      const url = `http://localhost:8888/animelist/${match.params.id}`;
+      const url = `${serverURL}/animelist/${match.params.id}`;
       const options = {
         method: 'DELETE',
         credentials: 'include',
@@ -93,7 +98,7 @@ const Anime = ({ match, animeList }) => {
   const updateEntry = (e) => {
     e.preventDefault();
 
-    const url = `http://localhost:8888/animelist/${match.params.id}`;
+    const url = `${serverURL}/animelist/${match.params.id}`;
     const requestBody = formToJSON(formRef);
     const options = {
       method: 'PUT',

@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
+const serverURL =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:8888'
+    : 'https://arcane-temple-45992.herokuapp.com';
+
 const Login = (props) => {
   const [success, setSuccess] = useState(0);
 
@@ -14,7 +19,7 @@ const Login = (props) => {
   };
 
   useEffect(() => {
-    const sessionURL = 'http://localhost:8888/session';
+    const sessionURL = `${serverURL}/session`;
     const params = new URLSearchParams(props.location.search);
 
     const options = {
