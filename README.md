@@ -56,3 +56,4 @@ Firstly, ensure that you have Node/NPM installed on your system. Then:
 - Option to view schedule on client timezone
 - Pagination for search results page
 - Adjust text sizes for mobile devices
+- Adjust size of cards to ensure they line up
