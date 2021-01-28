@@ -27,6 +27,20 @@ const Schedule = ({ animeList }) => {
   // true = view own list, false = view all currently airing
   const [viewList, setViewList] = useState(VIEW_ENUMS.VIEW_OWN);
   const [scheduleData, setScheduleData] = useState();
+  const [filteredAniList, setFilteredAniList] = useState();
+
+  // filter animelist data on mount
+  useEffect(() => {
+    if (animeList) {
+      const filteredAiring = animeList.data.filter((val) => {
+        return val.list_status.status === 'watching';
+      });
+      getTimes(filteredAiring).then((response) => {
+        setFilteredAniList(response);
+      });
+    } else {
+    }
+  }, [animeList]);
 
   // fetch schedule data from jikan on mount
   useEffect(() => {
@@ -96,11 +110,46 @@ const Schedule = ({ animeList }) => {
 
     return filtered.map((val, index) => {
       return (
-        <Link to={`/anime/${val.mal_id}`}>
+        <Link to={`/anime/${val.mal_id}`} key={index}>
           {val.title + (index < filtered.length - 1 ? ', ' : '')}
         </Link>
       );
     });
+  }
+
+  async function getTimes(animeList) {
+    const times = await Promise.all(
+      animeList.map(async (val) => {
+        const response = await fetch(
+          `https://api.jikan.moe/v3/anime/${val.node.id}`
+        );
+        const json = await response.json();
+        return {
+          airing_start: json.aired.from,
+          mal_id: json.mal_id,
+          title: json.title,
+          broadcast: json.broadcast,
+        };
+      })
+    );
+
+    const filterDay = (list, day) => {
+      return list.filter((val) => {
+        const date = new Date(val.airing_start);
+        return date.getUTCDay() === day;
+      });
+    };
+
+    const filtered = {
+      sunday: filterDay(times, 0),
+      monday: filterDay(times, 1),
+      tuesday: filterDay(times, 2),
+      wednesday: filterDay(times, 3),
+      thursday: filterDay(times, 4),
+      friday: filterDay(times, 5),
+      saturday: filterDay(times, 6),
+    };
+    return filtered;
   }
 
   const Body = () => {
@@ -170,13 +219,101 @@ const Schedule = ({ animeList }) => {
         );
       } else {
         return (
-          <p className="text-danger">
-            Something went wrong with fetching the data!
-          </p>
+          <tbody className="text-danger">
+            <tr>
+              <td>Something went wrong with fetching the data!</td>
+            </tr>
+          </tbody>
         );
       }
     } else if (viewList === VIEW_ENUMS.VIEW_OWN) {
-      return null;
+      if (filteredAniList) {
+        function mod(n, m) {
+          return ((n % m) + m) % m;
+        }
+
+        Object.keys(filteredAniList).forEach((val) => {
+          filteredAniList[val].forEach((anime) => {
+            const newDate = new Date();
+            let times = anime.broadcast.split(' ')[2].split(':');
+            times = [Number(times[0]), Number(times[1])];
+            newDate.setUTCHours(
+              mod(Number(times[0]) - 9, 24),
+              Number(times[1])
+            );
+            anime.airing_start = newDate.toUTCString();
+          });
+        });
+
+        const {
+          monday,
+          tuesday,
+          wednesday,
+          thursday,
+          friday,
+          saturday,
+          sunday,
+        } = filteredAniList;
+
+        return (
+          <tbody>
+            {times.map((val, index) => {
+              return (
+                <tr key={index}>
+                  <th scope="row">
+                    {String(val.hours).padStart(2, '0') +
+                      ':' +
+                      String(val.minutes).padStart(2, '0')}
+                  </th>
+                  <td>
+                    {scheduleData
+                      ? filteredList(monday, val.hours, val.minutes)
+                      : null}
+                  </td>
+                  <td>
+                    {scheduleData
+                      ? filteredList(tuesday, val.hours, val.minutes)
+                      : null}
+                  </td>
+                  <td>
+                    {scheduleData
+                      ? filteredList(wednesday, val.hours, val.minutes)
+                      : null}
+                  </td>
+                  <td>
+                    {scheduleData
+                      ? filteredList(thursday, val.hours, val.minutes)
+                      : null}
+                  </td>
+                  <td>
+                    {scheduleData
+                      ? filteredList(friday, val.hours, val.minutes)
+                      : null}
+                  </td>
+                  <td>
+                    {scheduleData
+                      ? filteredList(saturday, val.hours, val.minutes)
+                      : null}
+                  </td>
+                  <td>
+                    {scheduleData
+                      ? filteredList(sunday, val.hours, val.minutes)
+                      : null}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        );
+      } else {
+        return (
+          <tbody className="text-danger">
+            <tr>
+              <td>Something went wrong with fetching the data!</td>
+            </tr>
+          </tbody>
+        );
+      }
     }
   };
 
