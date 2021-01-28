@@ -1,70 +1,57 @@
-# Getting Started with Create React App
+# MyAnimeList Manager
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+MyAnimeList Manager is a React/Express web application designed to augment the experience on managing your Anime Lists from the MyAnimeList website, removing all the extra fluff from the website and giving you a minimalist interface for updating your lists and search for entries. In addition, the schedule tab shows you all the airing shows on your list, allowing you to keep track of which shows you need to watch and when.
 
-## Available Scripts
+mal-manager-client is the frontend of this web application. To view and setup the backend, please visit https://github.com/MarcusChok110/mal-manager-server.
 
-In the project directory, you can run:
+## Live Demo
 
-### `npm start`
+You can view a live demo of the client here: https://mal-manager-client.herokuapp.com/
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Pages
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Home
 
-### `npm test`
+![home](https://i.imgur.com/WflLpMy.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Anime List
 
-### `npm run build`
+![animelist](https://i.imgur.com/cAGjlyh.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Search / Search Results
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![search](https://i.imgur.com/x9uKLi0.png)
+![searchresults](https://i.imgur.com/Tkhh1oS.png)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Schedule
 
-### `npm run eject`
+![schedule](https://i.imgur.com/vcCIfSI.png)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Local Installation
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Firstly, ensure that you have Node/NPM installed on your system. Then:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+1. Download the repository
+2. cd to the directory and `npm install` the dependencies
+3. Ensure you have the following dependencies installed:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```
+    "base64url"
+    "bootstrap"
+    "randomstring"
+    "react"
+    "react-dom"
+    "react-router-dom"
+    "react-scripts"
+    "web-vitals"
+```
 
-## Learn More
+4. Ensure you have the [server](https://github.com/MarcusChok110/mal-manager-server) up and running
+5. `npm start` to view the client on http://localhost:3000 in the browser
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Todo
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Automatic logout when cookie expires
+- Option to view schedule on client timezone
+- Pagination for search results page
+- Adjust text sizes for mobile devices
