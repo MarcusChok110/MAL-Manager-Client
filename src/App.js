@@ -64,7 +64,7 @@ function App() {
 
   return (
     <div>
-      <Router basename={process.env.PUBLIC_URL}>
+      <Router>
         <Navbar user={userToken} setUser={setUserToken} />
         <div className="container mt-2">
           <div className="App">
