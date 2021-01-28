@@ -7,6 +7,7 @@ mal-manager-client is the frontend of this web application. To view and setup th
 ## Live Demo
 
 You can view a live demo of the client here: https://mal-manager-client.herokuapp.com/
+- *You may have to disable settings that prevent cross-site tracking or cookies to ensure it works properly*
 
 ## Pages
 
