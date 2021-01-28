@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 
 const STATUS_ENUMS = {
   Watching: 'watching',
@@ -366,7 +365,7 @@ const Anime = ({ match, animeList }) => {
 
   // converts related anime object to paragraph to be displayed
   function paragraphFromRelated(relObj) {
-    if (Object.keys(relObj).length > 0) {
+    if (relObj && Object.keys(relObj).length > 0) {
       const arr = Object.values(relObj);
 
       while (Array.isArray(arr[0])) {
@@ -376,16 +375,15 @@ const Anime = ({ match, animeList }) => {
 
       const filtered = arr.filter((val) => val.type === 'anime');
 
-      console.log(filtered);
       return filtered.map((val, index) => {
         return (
-          <a href={`/anime/${val.mal_id}`}>
+          <a href={`/anime/${val.mal_id}`} key={index}>
             {val.name + (index < filtered.length - 1 ? ', ' : '')}
           </a>
         );
       });
     } else {
-      return '';
+      return 'N/A';
     }
   }
 
@@ -488,15 +486,17 @@ const Anime = ({ match, animeList }) => {
                 </tr>
                 <tr>
                   <th scope="col">Aired:</th>
-                  <td>{data.aired.string}</td>
+                  <td>{data.aired ? data.aired.string : 'N/A'}</td>
                 </tr>
                 <tr>
                   <th scope="col">Genres:</th>
                   <td>
                     {data.genres
-                      .map((val) => val.name)
-                      .toString()
-                      .replaceAll(',', ', ')}
+                      ? data.genres
+                          .map((val) => val.name)
+                          .toString()
+                          .replaceAll(',', ', ')
+                      : 'N/A'}
                   </td>
                 </tr>
                 <tr>
@@ -527,7 +527,6 @@ const Anime = ({ match, animeList }) => {
     );
     const result = await response.json();
     setData(result);
-    console.log(result);
   };
 
   return (

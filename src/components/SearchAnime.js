@@ -90,7 +90,6 @@ const SearchAnime = (props) => {
       `https://api.jikan.moe/v3/search/anime${query}`
     );
     const result = await response.json();
-    console.log(result);
     const data = result.results;
     setData(data);
   };
