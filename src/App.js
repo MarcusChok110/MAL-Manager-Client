@@ -16,7 +16,7 @@ import Login from './api/Login';
 const serverURL =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:8888'
-    : 'https://arcane-temple-45992.herokuapp.com';
+    : 'https://mal-manager-server.herokuapp.com';
 
 function App() {
   // state for user info from MyAnimeList

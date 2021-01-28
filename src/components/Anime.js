@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 const serverURL =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:8888'
-    : 'https://arcane-temple-45992.herokuapp.com';
+    : 'https://mal-manager-server.herokuapp.com';
 
 const STATUS_ENUMS = {
   Watching: 'watching',

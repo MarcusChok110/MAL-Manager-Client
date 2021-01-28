@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const serverURL =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:8888'
-    : 'https://arcane-temple-45992.herokuapp.com';
+    : 'https://mal-manager-server.herokuapp.com';
 
 const Navbar = (props) => {
   // action listener for login button

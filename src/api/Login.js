@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 const serverURL =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:8888'
-    : 'https://arcane-temple-45992.herokuapp.com';
+    : 'https://mal-manager-server.herokuapp.com';
 
 const Login = (props) => {
   const [success, setSuccess] = useState(0);
